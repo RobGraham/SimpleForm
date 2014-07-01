@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<head>
+	<title>SimpleForm</title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link href='http://fonts.googleapis.com/css?family=Patua+One' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="simpleform.css" />
+</head>
+<body>
+	<section id="wrapper">
+		<h1>SimpleForm</h1>
+		<p class="intro">a jQuery Plugin</p>
+
+		<form class="testform" id="testform" method="post">
+			<fieldset class="personal-data">
+					<label for="name">Full Name: <span class="required">*</span></label>
+					<input type="text" id="name" name="name" placeholder="John Smith" />
+
+					<label for="email-address">Email: <span class="required">*</span></label>
+					<input type="email" name="email" id="email" placeholder="example@email.com" />
+
+					<label for="phone">Phone:</label>
+					<input type="tel" name="phone" id="phone" placeholder="000-000-000" />
+			</fieldset>
+
+			<fieldset class="address-data-inputs">
+					<label for="house-id">Building Number:</label>
+					<input type="text" id="house-id" name="house-id" placeholder="1" />
+
+					<label for="street">Street: <span class="required">*</span></label>
+					<input type="text" id="street" name="street" placeholder="The Street" />
+
+					<label for="town">Town:</label>
+					<input type="text" id="town" name="town" placeholder="A Town"/>
+
+					<label for="county">County:</label>
+					<input type="text" id="county" name="county" placeholder="San Luis Obispo"/>
+
+					<label for="postal-code">Postal Code:</label>
+					<input type="text" id="postal-code" name="postal-code" placeholder="93401" />
+			</fieldset>
+
+			<fieldset class="message-details">
+					<label for="comments">Comments:</label>
+					<textarea name="comments" id="comments"></textarea>
+        	</fieldset>
+        	<div class="clear"></div>
+		</form>
+
+		<h1 style="text-align: center">Slide Transition</h1>
+		<form id="testform2" method="post">
+			<fieldset class="personal-data">
+					<label for="name">Full Name: <span class="required">*</span></label>
+					<input type="text" id="name" name="name" placeholder="John Smith" />
+
+					<label for="email-address">Email: <span class="required">*</span></label>
+					<input type="email" name="email" id="email" placeholder="example@email.com" />
+
+					<label for="phone">Phone:</label>
+					<input type="tel" name="phone" id="phone" placeholder="000-000-000" />
+			</fieldset>
+
+			<fieldset class="personal-data">
+					<label for="name">Spouse Full Name: <span class="required">*</span></label>
+					<input type="text" id="name" name="spouse_name" placeholder="John Smith" />
+
+					<label for="email-address">Spouse Email: <span class="required">*</span></label>
+					<input type="email" name="email" id="spouse_email" placeholder="example@email.com" />
+
+					<label for="phone">Phone:</label>
+					<input type="tel" name="phone" id="phone" placeholder="000-000-000" />
+			</fieldset>
+
+			<fieldset class="address-data-inputs">
+					<label for="house-id">Building Number:</label>
+					<input type="text" id="house-id" name="house-id" placeholder="1" />
+
+					<label for="street">Street: <span class="required">*</span></label>
+					<input type="text" id="street" name="street" placeholder="The Street" />
+
+					<label for="town">Town:</label>
+					<input type="text" id="town" name="town" placeholder="A Town"/>
+
+					<label for="county">County:</label>
+					<input type="text" id="county" name="county" placeholder="San Luis Obispo"/>
+
+					<label for="postal-code">Postal Code:</label>
+					<input type="text" id="postal-code" name="postal-code" placeholder="93401" />
+			</fieldset>
+
+			<fieldset class="message-details">
+					<label for="comments">Comments:</label>
+					<textarea name="comments" id="comments"></textarea>
+        	</fieldset>
+        	<div class="clear"></div>
+		</form>
+
+
+		<h1 style="text-align: center">No Validation, No transition</h1>
+
+		<form id="testform3" method="post">
+			<fieldset class="personal-data">
+				<label for="name">Full Name:</label>
+				<input type="text" id="name" name="name" placeholder="John Smith" />
+
+				<label for="email-address">Email:</label>
+				<input type="email" name="email-address" id="email-address" placeholder="example@email.com" />
+
+				<label for="phone">Phone:</label>
+				<input type="tel" name="phone" id="phone" placeholder="000-000-000" />
+			</fieldset>
+
+			<fieldset class="personal-data">
+				<label for="name">Extra Name:</label>
+				<input type="text" id="extra-name" name="extra-name" placeholder="John Smith" />
+
+				<label for="email-address">Email:</label>
+				<input type="email" name="email-address" id="email-address" placeholder="example@email.com" />
+
+				<label for="phone">Phone:</label>
+				<input type="tel" name="phone" id="phone" placeholder="000-000-000" />
+			</fieldset>
+
+			<fieldset class="address-data-inputs">
+					<label for="house-id">Building Number:</label>
+					<input type="text" id="house-id" name="house-id" placeholder="1" />
+
+					<label for="street">Street:</label>
+					<input type="text" id="street" name="street" placeholder="The Street" />
+
+					<label for="town">Town:</label>
+					<input type="text" id="town" name="town" placeholder="A Town"/>
+
+					<label for="county">County:</label>
+					<input type="text" id="county" name="county" placeholder="San Luis Obispo"/>
+
+					<label for="postal-code">Postal Code:</label>
+					<input type="text" id="postal-code" name="postal-code" placeholder="93401" />
+			</fieldset>
+
+			<fieldset class="message-details">
+					<label for="comments">Comments:</label>
+					<textarea name="comments" id="comments"></textarea>
+        	</fieldset>
+		</form>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="simpleform.min.js"></script>
+	
+	<script type="text/javascript">
+		$(".testform").simpleform({
+			speed : 500,
+			transition : 'fade',
+			progressBar : true,
+			showProgressText : true,
+			validate: true
+		});
+
+		$("#testform2").simpleform({
+			speed : 500,
+			transition : 'slide',
+			progressBar : true,
+			showProgressText : true,
+			validate: true
+		});
+
+		$("#testform3").simpleform({
+			speed : 500,
+			transition : 'none',
+			progressBar : true,
+			showProgressText : true,
+			validate: false
+		});
+
+		function validateForm(formID, Obj){
+
+			switch(formID){
+				case 'testform' :
+					Obj.validate({
+						rules: {
+							email: {
+								required: true,
+								email: true
+							},
+							name: {
+								required: true
+							},
+							street: {
+								required: true
+							}
+						},
+						messages: {
+							email: {
+								required: "Please enter an email address",
+								email: "Not a valid email address"
+							},
+							name: {
+							 	required: "Please enter your name"
+							},
+							street: {
+								required: "Please enter street name"
+							}
+						}
+					});
+				return Obj.valid();
+				break;
+
+				case 'testform2' :
+					Obj.validate({
+						rules: {
+							email: {
+								required: true,
+								email: true
+							},
+							name: {
+								required: true
+							},
+							spouse_email: {
+								required: true,
+								email: true
+							},
+							spouse_name: {
+								required: true
+							},
+							street: {
+								required: true
+							}
+						},
+						messages: {
+							email: {
+								required: "Please enter an email address",
+								email: "Not a valid email address"
+							},
+							name: {
+							 	required: "Please enter your name"
+							},
+							spouse_email: {
+								required: "Please enter an email address",
+								email: "Not a valid email address"
+							},
+							spouse_name: {
+							 	required: "Please enter your spouses name"
+							},
+							street: {
+								required: "Please enter street name"
+							}
+						}
+					});
+				return Obj.valid();
+				break;
+			}
+		}
+		</script>
+</body>
+</html>
