@@ -22,208 +22,204 @@ THE SOFTWARE.
 
 */
 
-(function($){
+(function($) {
 
 	$.fn.simpleform = function(options) {
-		var	self = this,
 
-			// Start index counter
-			i = 0,
+		var	self = this;
 
-			//Parameters (options) relevant to the plugin
-			//and its functionality.
-			params = {
-				next : 'Next',
-				previous : 'Previous',
-				submit : 'Submit',
-				transition : 'fade',
-				speed : 500,
-				validate : false,
-				progressBar : true,
-				showProgressText : true,
-			},
+		// Start index counter
+		var	i = 0,
 
-			//Get all fieldsets of the current form
-			$target = self.find('fieldset'),
+		// Parameters (options) relevant to the plugin
+		// and its functionality.
+		var	params = {
+			next : 'Next',
+			previous : 'Previous',
+			submit : 'Submit',
+			transition : 'fade',
+			speed : 500,
+			validate : false,
+			progressBar : true,
+			showProgressText : true,
+		};
 
-			//Active fieldset height
-			targetHeight,
+		// Get all fieldsets of the current form
+		var	$target = self.find('fieldset');
 
-			//Height of active fieldset, progress bar 
-			//and controls
-			totalHeight,
+		// Active fieldset height
+		var	targetHeight;
 
-			//self. controls
-			$controls,
+		// Height of active fieldset, progress bar
+		// and controls
+		var	totalHeight;
 
-			//self. controls height
-			controlsHeight,
+		var	$controls = {
+			container: undefined,
+			next: undefined,
+			previous: undefined,
+			submit: undefined
+		};
 
-			//Set progress bar height to 0 incase the
-			//user requests the plugin not to use it, that way
-			//it's height is not calculated
-			progressBarHeight = 0,
+		var	controlsHeight,
 
-			//This determines how many sections there are
-			totalSections = $target.length,
+		// Set progress bar height to 0 incase the
+		// user requests the plugin not to use it, that way
+		// it's height is not calculated
+		var	progressBarHeight = 0,
 
-			//This is our total percentage which we devide
-			//by totalSections
-			fullProgress = 100,
+		// This determines how many sections there are
+		var	totalSections = $target.length,
 
-			//Our "previous" button holder
-			$previousLink,
+		// This is our total percentage which we devide
+		// by totalSections
+		var	fullProgress = 100,
 
-			//Our "next" button holder
-			$nextLink,
+		// Used for whether fieldset is valid after validation
+		var	isFormValid;
 
-			//Undifined value used for whether fieldset 
-			//is valid after validation
-			valid;
-		
-		//If options are passed, override the default values	
-		if(options) {
+		//  If options are passed, override the default values
+		if (options) {
 			$.extend(params, options);
 		}
 
-		//If progressBar is set true, then add the Progress Bar
-		//which returns the height used later to calculate totalHeight
-		if(params.progressBar){
+		//  If progressBar is set true, then add the Progress Bar
+		//  which returns the height used later to calculate totalHeight
+		if (params.progressBar) {
 			progressBarHeight = addProgressBar();
 		}
 
-		//Append the form controls to the button
-		self.append('<div class="form-controls"><input type="button" value="' + params.previous + '" id="previous-fieldset" class="simple-form-button" /><input type="button" value="' + params.next + '" id="next-fieldset" class="simple-form-button" /><input type="submit" value="' + params.submit + '" id="submit-button" class="simple-form-button" /><div class="clear"></div></div>');
-		
-		//After the form controls have been added, store their
-		//values of this.form (self);
-		$controls = self.find('.form-controls');
-		$previousLink = self.find('#previous-fieldset');
-		$nextLink = self.find('#next-fieldset');
-		$submit = self.find('#submit-button');
+		// Append the form controls to the button
+		self.append('<div class="form-controls"> \
+						<input type="button" value="' + params.previous + '" id="previous-fieldset" class="simple-form-button" /> \
+						<input type="button" value="' + params.next + '" id="next-fieldset" class="simple-form-button" /> \
+						<input type="submit" value="' + params.submit + '" id="submit-button" class="simple-form-button" /> \
+						<div class="clear" /> \
+					</div>');
 
-		//If not set in CSS already, hide any of the fieldsets that
-		//are not the first.
+		// After the form controls have been added, store their
+		// values of this.form (self);
+		$controls.container = self.find('.form-controls');
+		$controls.previous = self.find('#previous-fieldset');
+		$controls.next = self.find('#next-fieldset');
+		$controls.submit = self.find('#submit-button');
+
+		// If not set in CSS already, hide any of the fieldsets that
+		// are not the first.
 		$target.not(':first').hide();
 
-		//Go Back click event
-		$previousLink.click(function(e){
+		// Go Back click event
+		$controls.previous.click(function(e) {
 
-			//If the form is NOT animated, pass the new index
-			//to go back 1 fieldset.
-			if(!amIAnimated()){
+			// If the form is NOT animating, pass the new index
+			// to go back 1 fieldset.
+			if (!isAnimating()) {
 				i--;
 				changeTarget(i);
 			}
+
 		});
 
-		//Go Forward click event
-		$nextLink.click(function(e){
+		// Go Forward click event
+		$controls.next.click(function(e) {
 
-			//Store the animated boolean so that we don't
-			//call the function twice later.
-			var animated = amIAnimated();
+			// Before moving forward, does the user have Validation
+			// turned on?
+			if (params.validate) {
 
-			//Before moving forward, does the user have Validation
-			//turned on?
-			if(params.validate){
-
-				//Store the result of the form validation by calling
-				//the validateForm function outside of this plugin,
-				//manually created by the user which contains the validation.
-				//The function needs to return true on the validation
-				//for us to continue.
-				if(self.attr('id')) {
-					valid = validateForm(self.attr('id'), self);
+				// Store the result of the form validation by calling
+				// the validateForm function outside of this plugin,
+				// manually created by the user which contains the validation.
+				// The function needs to return true on the validation
+				// for us to continue.
+				if (self.attr('id')) {
+					isFormValid = validateForm(self.attr('id'), self);
 				} else {
-					valid = validateForm(self.attr('class'), self);
+					isFormValid = validateForm(self.attr('class'), self);
 				}
-				
 
-				//If Validation was successful and the form isn't animated,
-				//Continue.
-				if(valid && !animated){
+
+				// If Validation was successful and the form isn't animating, continue.
+				if (isFormValid && !isAnimating()) {
 					i++;
 					changeTarget(i);
 				}
 			}
 
-			//Otherwise just continue the regular route.
-			else if(!animated){
+			// Otherwise just continue the regular route.
+			else if (!isAnimating()) {
 				i++;
 				changeTarget(i);
 			}
-			
+
 		});
 
-		$submit.click(function(e){
-			//Store the animated boolean so that we don't
-			//call the function twice later.
-			var animated = amIAnimated();
+		$controls.submit.click(function(e) {
 
-			//Before moving forward, does the user have Validation
-			//turned on?
-			if(params.validate){
+			// Before moving forward, does the user have validation
+			// turned on?
+			if (params.validate) {
 
-				if(self.attr('id')) {
-					valid = validateForm(self.attr('id'), self);
+				if (self.attr('id')) {
+					isFormValid = validateForm(self.attr('id'), self);
 				} else {
-					valid = validateForm(self.attr('class'), self);
+					isFormValid = validateForm(self.attr('class'), self);
 				}
 			}
 
-			if(!valid) e.preventDefault();
+			if (!isFormValid) e.preventDefault();
+
 		});
 
-		//Checks to see if the current form is being animated
-		function amIAnimated(){
-			if(!self.is(':animated')){
-				return false;
-			}
-			return true;
+		// Checks to see if the current form is being animating
+		function isAnimating() {
+			return self.is(':animated');
 		}
 
-		//Function controlling the changing of each fieldset including
-		//the transition effect requested by the user
+		// Function controlling the changing of each fieldset including
+		// the transition effect requested by the user
 		function changeTarget(index) {
 
-			//Get the total heights of each element that need to be
-			//calculated. This will ensure that the animation of the 
-			//form's height is accurate to accommodate its elements.
+			// Get the total heights of each element that need to be
+			// calculated. This will ensure that the animation of the
+			// form's height is accurate to accommodate its elements.
 			targetHeight = $target.eq(index).outerHeight(true);
 			controlsHeight = $controls.outerHeight(true);
 			totalHeight = targetHeight + controlsHeight + progressBarHeight;
 
-			switch(params.transition){
+			switch(params.transition) {
 				case 'fade':
 					$target.fadeOut(params.speed);
 					$controls.css('visibility', 'hidden');
 					self.removeAttr('style');
-					self.animate({
-						height: totalHeight
-					}, params.speed, function(){
-						$target.eq(index).fadeIn(params.speed);
-						$controls.css('visibility', 'visible');
-						showControls(index);
-						self.removeAttr('style');
-						self.css('min-height' , totalHeight+'px');
-					});
+					self.animate(
+						{ height: totalHeight },
+						params.speed,
+						function() {
+							$target.eq(index).fadeIn(params.speed);
+							$controls.css('visibility', 'visible');
+							showControls(index);
+							self.removeAttr('style').css('min-height' , totalHeight + 'px');
+						}
+					);
 				break;
 
 				case 'slide':
 					$controls.css('visibility', 'hidden');
 					self.removeAttr('style');
-					self.animate({
-						height: totalHeight
-					}, params.speed, function(){
-						$target.hide();
-						$target.eq(index).show();
-						$controls.css('visibility', 'visible') ;
-						showControls(index);
-						self.removeAttr('style');
-						self.css('min-height' , totalHeight+'px');
-					});
-					
+					self.animate(
+						{ height: totalHeight },
+						params.speed,
+						function() {
+							$target.hide();
+							$target.eq(index).show();
+							$controls.css('visibility', 'visible') ;
+							showControls(index);
+							self.removeAttr('style');
+							self.css('min-height' , totalHeight+'px');
+						}
+					);
+
 				break;
 
 				default:
@@ -232,46 +228,46 @@ THE SOFTWARE.
 					showControls(index);
 			}
 
-			//Activate the progress bar's new value and position
+			// Activate the progress bar's new value and position
 			progressBarChange(index);
 		}
 
-		//Show the controls dependent on the forms position.
-		function showControls(index){
+		// Show the controls dependent on the forms position.
+		function showControls(index) {
 
-			//If our index is less than or equal to zero, we dont
-			//need to display the Previous button.
-			if(index <= 0){
-				$previousLink.hide();
+			// If our index is less than or equal to zero, we dont
+			// need to display the Previous button.
+			if (index <= 0) {
+				$controls.previous.hide();
 			} else {
-				$previousLink.show();
+				$controls.previous.show();
 			}
 
-			//If we're more than or equal to the total sections, 
-			//display the submit button and remove the Next button
-			if(index >= totalSections -1){
-				$nextLink.hide();
+			// If we're more than or equal to the total sections,
+			// display the submit button and remove the Next button
+			if (index >= totalSections -1) {
+				$controls.next.hide();
 				self.find('#submit-button').show();
 			} else {
-				$nextLink.show();
+				$controls.next.show();
 				self.find('#submit-button').hide();
 			}
 
 		}
 
-		//Progress bar is activated if true in our parameters. This 
-		//prepends the bar at the top of the form.
-		function addProgressBar(){
+		// Progress bar is activated if true in our parameters. This
+		// prepends the bar at the top of the form.
+		function addProgressBar() {
 			self.prepend('<div class="progress-bar"><span class="progress-text"></span><span class="progress-bg"></span></div>');
 			$progressBar = self.find('.progress-bar');
 			return $progressBar.outerHeight(true);
 		}
 
-		//Our progress bar animation
-		function progressBarChange(index){
+		// Our progress bar animation
+		function progressBarChange(index) {
 
-			//If true in parameters, display the navigation information
-			if(params.showProgressText){
+			// If true in parameters, display the navigation information
+			if (params.showProgressText) {
 				self.find('.progress-text').text((index + 1) + "/" + totalSections);
 			}
 
@@ -279,6 +275,9 @@ THE SOFTWARE.
 					width: (fullProgress / totalSections) * (index + 1) + "%"},
 					params.speed);
 		}
+
 		progressBarChange(0);
+
 	};
+
 })(jQuery);
