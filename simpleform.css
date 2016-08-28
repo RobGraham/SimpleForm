@@ -25,7 +25,7 @@ label.error,
 	position: relative;
 }
 
-form { 
+form {
     border-radius: 10px;
     border: 3px solid #ccc;
     box-shadow: 0px 2px 5px 0px #444;
@@ -33,7 +33,7 @@ form {
     position: relative;
     padding: 10px;
     overflow: hidden;
-} 
+}
 label {
 	margin-bottom: 5px;
 }
@@ -69,7 +69,7 @@ textarea {
     -ms-box-sizing: border-box;
 
 }
-input {    
+input {
 	width: 200px;
     height: 26px;
 }
@@ -86,13 +86,12 @@ a {
 	text-decoration: none;
 }
 .simple-form-button {
-	-moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: -moz-linear-gradient(center top , #FFFFFF, #EEEEEE) repeat scroll 0 0 transparent;
-    background: -webkit-linear-gradient(center top , #FFFFFF, #EEEEEE) repeat scroll 0 0 transparent;
+    background-color: #f4f5f5;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f5f5), to(#dfdddd));
+    background-image: -webkit-linear-gradient(#f4f5f5, #dfdddd);
+    background-image: -moz-linear-gradient(#f4f5f5, #dfdddd);
+    background-image: -o-linear-gradient(#f4f5f5, #dfdddd);
+    background-image: linear-gradient(#f4f5f5, #dfdddd);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f4f5f5, endColorstr=#dfdddd);
     border-color: #E2E2E2 #DDDDDD #CCCCCC;
     border-left: 1px solid #DDDDDD;
     border-radius: 5px 5px 5px 5px;
@@ -107,7 +106,15 @@ a {
     width: auto;
     height: auto;
 }
-.submit-button {
+.simple-form-button:hover {
+    background-color: #EBEBEB; background-image: -webkit-gradient(linear, left top, left bottom, from(#EBEBEB), to(#c6c3c3));
+    background-image: -webkit-linear-gradient(top, #EBEBEB, #c6c3c3);
+    background-image: -moz-linear-gradient(top, #EBEBEB, #c6c3c3);
+    background-image: -ms-linear-gradient(top, #EBEBEB, #c6c3c3);
+    background-image: -o-linear-gradient(top, #EBEBEB, #c6c3c3);
+    background-image: linear-gradient(to bottom, #EBEBEB, #c6c3c3);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EBEBEB, endColorstr=#c6c3c3);
+}
+#submit-button {
 	background: -moz-linear-gradient(center top , #FFFFFF, #2a8db4) repeat scroll 0 0 transparent;
     float: right;
     display: none;
@@ -117,18 +124,13 @@ a {
     clear: both;
 }
 
-.previous-fieldset {
+#previous-fieldset {
 	display: none;
 	float: left;
 }
-.next-fieldset {
+#next-fieldset {
 	float: right;
-},
-a.next-fieldset,
-a.previous-fieldset {
-	color: #ccc;
 }
-
 .clear {
 	clear: both;
 }
