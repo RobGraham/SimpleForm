@@ -29,7 +29,7 @@ THE SOFTWARE.
 		var	self = this;
 
 		// Start index counter
-		var	i = 0,
+		var	i = 0;
 
 		// Parameters (options) relevant to the plugin
 		// and its functionality.
@@ -61,19 +61,19 @@ THE SOFTWARE.
 			submit: undefined
 		};
 
-		var	controlsHeight,
+		var	controlsHeight;
 
 		// Set progress bar height to 0 incase the
 		// user requests the plugin not to use it, that way
 		// it's height is not calculated
-		var	progressBarHeight = 0,
+		var	progressBarHeight = 0;
 
 		// This determines how many sections there are
-		var	totalSections = $target.length,
+		var	totalSections = $target.length;
 
 		// This is our total percentage which we devide
 		// by totalSections
-		var	fullProgress = 100,
+		var	fullProgress = 100;
 
 		// Used for whether fieldset is valid after validation
 		var	isFormValid;
@@ -86,7 +86,7 @@ THE SOFTWARE.
 		//  If progressBar is set true, then add the Progress Bar
 		//  which returns the height used later to calculate totalHeight
 		if (params.progressBar) {
-			progressBarHeight = addProgressBar();
+			addProgressBar();
 		}
 
 		// Append the form controls to the button
@@ -103,6 +103,7 @@ THE SOFTWARE.
 		$controls.previous = self.find('#previous-fieldset');
 		$controls.next = self.find('#next-fieldset');
 		$controls.submit = self.find('#submit-button');
+		progressBarHeight = $progressBar.outerHeight(true);
 
 		// If not set in CSS already, hide any of the fieldsets that
 		// are not the first.
@@ -184,20 +185,20 @@ THE SOFTWARE.
 			// calculated. This will ensure that the animation of the
 			// form's height is accurate to accommodate its elements.
 			targetHeight = $target.eq(index).outerHeight(true);
-			controlsHeight = $controls.outerHeight(true);
+			controlsHeight = $controls.container.outerHeight(true);
 			totalHeight = targetHeight + controlsHeight + progressBarHeight;
 
 			switch(params.transition) {
 				case 'fade':
 					$target.fadeOut(params.speed);
-					$controls.css('visibility', 'hidden');
+					$controls.container.css('visibility', 'hidden');
 					self.removeAttr('style');
 					self.animate(
 						{ height: totalHeight },
 						params.speed,
 						function() {
 							$target.eq(index).fadeIn(params.speed);
-							$controls.css('visibility', 'visible');
+							$controls.container.css('visibility', 'visible');
 							showControls(index);
 							self.removeAttr('style').css('min-height' , totalHeight + 'px');
 						}
@@ -205,7 +206,7 @@ THE SOFTWARE.
 				break;
 
 				case 'slide':
-					$controls.css('visibility', 'hidden');
+					$controls.container.css('visibility', 'hidden');
 					self.removeAttr('style');
 					self.animate(
 						{ height: totalHeight },
@@ -213,7 +214,7 @@ THE SOFTWARE.
 						function() {
 							$target.hide();
 							$target.eq(index).show();
-							$controls.css('visibility', 'visible') ;
+							$controls.container.css('visibility', 'visible') ;
 							showControls(index);
 							self.removeAttr('style');
 							self.css('min-height' , totalHeight+'px');
@@ -229,7 +230,7 @@ THE SOFTWARE.
 			}
 
 			// Activate the progress bar's new value and position
-			progressBarChange(index);
+			progressBarSetIndex(index);
 		}
 
 		// Show the controls dependent on the forms position.
@@ -258,13 +259,16 @@ THE SOFTWARE.
 		// Progress bar is activated if true in our parameters. This
 		// prepends the bar at the top of the form.
 		function addProgressBar() {
-			self.prepend('<div class="progress-bar"><span class="progress-text"></span><span class="progress-bg"></span></div>');
+			self.prepend('<div class="progress-bar"> \
+							<span class="progress-text"></span> \
+							<span class="progress-bg"></span> \
+						</div>');
+
 			$progressBar = self.find('.progress-bar');
-			return $progressBar.outerHeight(true);
 		}
 
 		// Our progress bar animation
-		function progressBarChange(index) {
+		function progressBarSetIndex(index) {
 
 			// If true in parameters, display the navigation information
 			if (params.showProgressText) {
@@ -276,7 +280,7 @@ THE SOFTWARE.
 					params.speed);
 		}
 
-		progressBarChange(0);
+		progressBarSetIndex(0);
 
 	};
 
