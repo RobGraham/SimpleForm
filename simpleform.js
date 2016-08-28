@@ -133,12 +133,7 @@ THE SOFTWARE.
 				// manually created by the user which contains the validation.
 				// The function needs to return true on the validation
 				// for us to continue.
-				if (self.attr('id')) {
-					isFormValid = validateForm(self.attr('id'), self);
-				} else {
-					isFormValid = validateForm(self.attr('class'), self);
-				}
-
+				isFormValid = validateForm(self);
 
 				// If Validation was successful and the form isn't animating, continue.
 				if (isFormValid && !isAnimating()) {
@@ -160,12 +155,7 @@ THE SOFTWARE.
 			// Before moving forward, does the user have validation
 			// turned on?
 			if (params.validate) {
-
-				if (self.attr('id')) {
-					isFormValid = validateForm(self.attr('id'), self);
-				} else {
-					isFormValid = validateForm(self.attr('class'), self);
-				}
+				isFormValid = validateForm(self);
 			}
 
 			if (!isFormValid) e.preventDefault();
